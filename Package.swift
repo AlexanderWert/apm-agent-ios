@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -20,6 +20,7 @@ let package = Package(
     dependencies: [
         .package(name: "opentelemetry-swift", url: "https://github.com/open-telemetry/opentelemetry-swift", from: "1.1.0"),
         .package(name: "Reachability", url: "https://github.com/ashleymills/Reachability.swift", from: "5.1.0"),
+        .package(url: "https://github.com/microsoft/plcrashreporter.git", .upToNextMajor(from: "1.0.0")),
     ],
     targets: [
         .target(name: "MemorySampler",
@@ -41,8 +42,9 @@ let package = Package(
                 .product(name: "URLSessionInstrumentation", package: "opentelemetry-swift"),
                 .product(name: "ResourceExtension", package: "opentelemetry-swift"),
                 .product(name: "Reachability", package: "Reachability"),
+                .product(name: "CrashReporter", package: "plcrashreporter"),
                 "MemorySampler",
-                "CPUSampler"
+                "CPUSampler",
             ],
             path: "Sources/apm-agent-ios"
         ),
