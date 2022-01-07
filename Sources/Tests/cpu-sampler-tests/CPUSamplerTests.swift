@@ -1,4 +1,4 @@
-// Copyright © 2021 Elasticsearch BV
+// Copyright © 2022 Elasticsearch BV
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -12,20 +12,41 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+
 import Foundation
+import Dispatch
 import XCTest
-@testable import MemorySampler
+@testable import CPUSampler
 
 
 final class InstrumentorTests: XCTestCase {
-    func testMemorySampler() {
+
+    let busy : DispatchWorkItem = DispatchWorkItem(qos: .unspecified, flags: .detached){
+        while (true) {
+            arc4random()
+        }
+    }
+    
+    override func setUp() {
+        DispatchQueue.global().async(execute: busy)
+        
+        
+    }
+    override func tearDown() {
+        if (!busy.isCancelled) {
+            busy.cancel()
+        }
+    }
+    
+    func testCPUSampler() {
         if #available(iOS 13.0, *) {
             self.measure(metrics: [XCTCPUMetric(), XCTMemoryMetric(), XCTClockMetric()]) {
-                let _ = MemorySampler.memoryFootprint()
+                let result = CPUSampler.cpuFootprint()
+                print("cpu usage: \(result)")
             }
         } else {
             self.measure {
-                let _ = MemorySampler.memoryFootprint()
+                let _ = CPUSampler.cpuFootprint()
             }
         }
     }

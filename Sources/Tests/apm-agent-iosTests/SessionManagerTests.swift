@@ -36,4 +36,5 @@ final class SessionManagerTests: XCTestCase {
 
         XCTAssertTrue(SessionManager.instance.isValid())
     }
+
 }

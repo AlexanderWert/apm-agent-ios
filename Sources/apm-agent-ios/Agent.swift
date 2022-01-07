@@ -80,10 +80,11 @@ public class Agent {
         let vars = AgentResource.get().merging(other: AgentEnvResource.resource)
         // create meter provider
         OpenTelemetry.registerMeterProvider(meterProvider: MeterProviderBuilder()
-            .with(processor: MetricProcessorSdk())
-            .with(resource: vars)
-            .with(exporter: OtlpMetricExporter(channel: channel, config: otlpConfiguration))
-            .build())
+                                                .with(processor: MetricProcessorSdk())
+                                                .with(resource: vars)
+                                                .with(exporter: OtlpMetricExporter(channel: channel,
+                                                                                   config: otlpConfiguration))
+                                                .build());
 
         // create tracer provider
         let e = OtlpTraceExporter(channel: channel, config: otlpConfiguration)

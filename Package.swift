@@ -18,7 +18,7 @@ let package = Package(
         .library(name: "CPUSampler", type: .static, targets: ["CPUSampler"]),
     ],
     dependencies: [
-        .package(name: "opentelemetry-swift", url: "https://github.com/open-telemetry/opentelemetry-swift", from: "1.1.0"),
+        .package(name: "opentelemetry-swift", url: "https://github.com/open-telemetry/opentelemetry-swift", from: "1.1.1"),
         .package(name: "Reachability", url: "https://github.com/ashleymills/Reachability.swift", from: "5.1.0"),
     ],
     targets: [
@@ -52,6 +52,9 @@ let package = Package(
             path: "Sources/Tests/apm-agent-iosTests"),
         .testTarget(name: "memory-sampler-tests",
                     dependencies: ["MemorySampler"],
-                    path: "Sources/Tests/memory-sampler-tests")
+                    path: "Sources/Tests/memory-sampler-tests"),
+        .testTarget(name: "cpu-sampler-tests",
+                    dependencies: ["CPUSampler"],
+                    path: "Sources/Tests/cpu-sampler-tests")
     ]
 )
