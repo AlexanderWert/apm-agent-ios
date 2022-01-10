@@ -25,7 +25,7 @@ public class CPUSampler {
         
         cpuTime = meter.createDoubleCounter(name: "system.cpu.time")
         
-        gauge = meter.createDoubleObservableGauge(name: "system.cpu.utilization") { [cpuTime]
+        gauge = meter.createDoubleObservableGauge(name: "system.cpu.usage") { [cpuTime]
             gauge in
             let (system_time, user_time, usage) = CPUSampler.cpuFootprint()
             gauge.observe(value: usage, labels: ["state": "user"])
