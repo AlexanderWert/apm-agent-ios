@@ -51,11 +51,11 @@
             viewDidLoad.swizzle()
             viewWillAppear.swizzle()
             viewDidAppear.swizzle()
-            viewDidDisappear.swizzle()
-            viewWillDisappear.swizzle()
+            //viewDidDisappear.swizzle()
+            //viewWillDisappear.swizzle()
             transition.swizzle()
-            viewWillLayoutSubviews.swizzle()
-            viewDidLayoutSubviews.swizzle()
+            //viewWillLayoutSubviews.swizzle()
+            //viewDidLayoutSubviews.swizzle()
         }
 
         static func getTracer() -> TracerSdk {
@@ -167,7 +167,7 @@
                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
 
                             previousImplementation(viewController, self.selector, animated)
-                            TraceLogger.stopTrace(associatedObject: viewController)
+                            //TraceLogger.stopTrace(associatedObject: viewController)
                         }
                     }
                 }
@@ -186,7 +186,7 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController, animated -> Void in
                             let name = "\(type(of: viewController)).viewDidAppear()"
-                           _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                          // _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
                             TraceLogger.setDate(on: viewController)
                             previousImplementation(viewController, self.selector, animated)
                             TraceLogger.stopTrace(associatedObject: viewController)
