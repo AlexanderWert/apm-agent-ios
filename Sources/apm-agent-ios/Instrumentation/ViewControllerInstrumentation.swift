@@ -163,7 +163,7 @@
                         { viewController, animated -> Void in
 
                             let name = "\(type(of: viewController)).viewWillAppear()"
-
+                            
                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
 
                             previousImplementation(viewController, self.selector, animated)
