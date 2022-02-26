@@ -37,15 +37,13 @@ class TraceLogger {
     }
 
     static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String) -> Span {
-        print("#### Startong trace: \(name)")
+        print("#### Starting trace: \(name)")
         guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span else {
             let builder = tracer.spanBuilder(spanName: "\(name)")
-                .setSpanKind(spanKind: .client)
-
+                .setSpanKind(spanKind: .client).setActive(true)
+            
             let span = builder.startSpan()
             span.setAttribute(key: "session.id", value: SessionManager.instance.session())
-            OpenTelemetrySDK.instance.contextProvider.setActiveSpan(span)
-
             objc_setAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey), span, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
             return span
         }
@@ -98,7 +96,6 @@ class TraceLogger {
     }
     
     static func getCurrentSpanForViewController(viewController: UIViewController) -> Span? {
-        
         var span = objc_getAssociatedObject(viewController, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span
         var currentController = viewController.parent
         while span == nil  &&  currentController != nil {
