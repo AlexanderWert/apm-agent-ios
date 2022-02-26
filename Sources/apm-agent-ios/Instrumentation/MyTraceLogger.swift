@@ -36,30 +36,33 @@ class MyTraceLogger {
         return date
     }
 
-    static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String) -> Span {
+    static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String) -> Span? {
         print("####### 4 Starting span ...")
         var isRoot = true
         if let activeSpan = OpenTelemetrySDK.instance.contextProvider.activeSpan {
             print("####### ACTIVE SPAN: \(activeSpan.context.spanId)")
             isRoot = false
         }
-        guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? Span else {
-            
-            let builder = tracer.spanBuilder(spanName: "\(name)")
-                .setSpanKind(spanKind: .client)
-            
-            if isRoot {
-                builder.setActive(true)
-            }
+        if isRoot {
+            guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? Span else {
                 
-            let span = builder.startSpan()
-            print("####### 4 Starting span: \(span.context.spanId)")
-            print("####### NAME: \(span.name)")
-            span.setAttribute(key: "session.id", value: SessionManager.instance.session())
-            objc_setAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey), span, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
-            return span
+                let builder = tracer.spanBuilder(spanName: "\(name)")
+                    .setSpanKind(spanKind: .client)
+                
+                if isRoot {
+                    builder.setActive(true)
+                }
+                    
+                let span = builder.startSpan()
+                print("####### 4 Starting span: \(span.context.spanId)")
+                print("####### NAME: \(span.name)")
+                span.setAttribute(key: "session.id", value: SessionManager.instance.session())
+                objc_setAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey), span, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+                return span
+            }
+            return previousSpan
         }
-        return previousSpan
+        return nil
     }
      
     static func stopTrace(associatedObject: AnyObject) {
