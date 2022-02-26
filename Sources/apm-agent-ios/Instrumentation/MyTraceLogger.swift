@@ -37,6 +37,7 @@ class MyTraceLogger {
     }
 
     static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String) -> Span {
+        print("#### 1 Starting trace: \(name)")
         let builder = tracer.spanBuilder(spanName: "\(name)")
             .setSpanKind(spanKind: .client).setActive(true)
         
