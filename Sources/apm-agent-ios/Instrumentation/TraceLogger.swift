@@ -40,11 +40,10 @@ class TraceLogger {
         print("#### Starting trace: \(name)")
         guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span else {
             let builder = tracer.spanBuilder(spanName: "\(name)")
-                .setSpanKind(spanKind: .client).setActive(true)
+                .setSpanKind(spanKind: .client)
             
             let span = builder.startSpan()
             span.setAttribute(key: "session.id", value: SessionManager.instance.session())
-            OpenTelemetrySDK.instance.contextProvider.setActiveSpan(span)
             objc_setAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey), span, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
             return span
         }
