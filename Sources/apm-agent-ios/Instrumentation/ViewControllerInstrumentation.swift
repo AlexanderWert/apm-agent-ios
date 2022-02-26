@@ -47,15 +47,15 @@
         }
 
         func swizzle() {
-            loadView.swizzle()
-            viewDidLoad.swizzle()
+            //loadView.swizzle()
+            //viewDidLoad.swizzle()
             viewWillAppear.swizzle()
             viewDidAppear.swizzle()
             viewDidDisappear.swizzle()
             viewWillDisappear.swizzle()
-            transition.swizzle()
-            viewWillLayoutSubviews.swizzle()
-            viewDidLayoutSubviews.swizzle()
+            //transition.swizzle()
+            //viewWillLayoutSubviews.swizzle()
+            //viewDidLayoutSubviews.swizzle()
         }
 
         static func getTracer() -> TracerSdk {
