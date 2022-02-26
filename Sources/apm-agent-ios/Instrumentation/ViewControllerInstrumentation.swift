@@ -20,26 +20,26 @@
     import UIKit
 
     internal class ViewControllerInstrumentation {
-        let loadView: LoadView
-        let viewDidLoad: ViewDidLoad
+       // let loadView: LoadView
+        //let viewDidLoad: ViewDidLoad
         let viewWillAppear: ViewWillAppear
         let viewDidAppear: ViewDidAppear
-        let viewDidDisappear: ViewDidDisappear
-        let viewWillDisappear: ViewWillDisappear
-        let viewWillLayoutSubviews: ViewWillLayoutSubviews
-        let viewDidLayoutSubviews: ViewDidLayoutSubviews
-        let transition: Transition
+        //let viewDidDisappear: ViewDidDisappear
+        //let viewWillDisappear: ViewWillDisappear
+        //let viewWillLayoutSubviews: ViewWillLayoutSubviews
+        //let viewDidLayoutSubviews: ViewDidLayoutSubviews
+        //let transition: Transition
         init() throws {
-            loadView = try LoadView.build()
-            viewDidLoad = try ViewDidLoad.build()
+            //loadView = try LoadView.build()
+            //viewDidLoad = try ViewDidLoad.build()
             viewWillAppear = try ViewWillAppear.build()
             viewDidAppear = try ViewDidAppear.build()
-            viewDidDisappear = try ViewDidDisappear.build()
-            viewWillDisappear = try ViewWillDisappear.build()
-            viewWillLayoutSubviews = try ViewWillLayoutSubviews.build()
-            viewDidLayoutSubviews = try ViewDidLayoutSubviews.build()
-            transition = try Transition.build()
-            NotificationCenter.default.addObserver(TraceLogger.self, selector: #selector(TraceLogger.didEnterBackground), name: UIApplication.willResignActiveNotification, object: nil)
+            //viewDidDisappear = try ViewDidDisappear.build()
+            //viewWillDisappear = try ViewWillDisappear.build()
+            //viewWillLayoutSubviews = try ViewWillLayoutSubviews.build()
+            //viewDidLayoutSubviews = try ViewDidLayoutSubviews.build()
+            //transition = try Transition.build()
+            //NotificationCenter.default.addObserver(TraceLogger.self, selector: #selector(TraceLogger.didEnterBackground), name: UIApplication.willResignActiveNotification, object: nil)
         }
 
         deinit {
@@ -163,7 +163,7 @@
                         { viewController, animated -> Void in
                             let name = "\(type(of: viewController)).viewAppear()"
                             
-                           _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
 
                             previousImplementation(viewController, self.selector, animated)
                         }

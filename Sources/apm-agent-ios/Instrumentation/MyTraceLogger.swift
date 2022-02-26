@@ -43,7 +43,7 @@ class MyTraceLogger {
             print("####### ACTIVE SPAN: \(activeSpan.context.spanId)")
             isRoot = false
         }
-        guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span else {
+        guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? Span else {
             
             let builder = tracer.spanBuilder(spanName: "\(name)")
                 .setSpanKind(spanKind: .client)
