@@ -37,7 +37,7 @@ class MyTraceLogger {
     }
 
     static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String) -> Span {
-        print("#### 1 Starting trace: \(name)")
+        print("#### 2 Starting trace: \(name)")
         let builder = tracer.spanBuilder(spanName: "\(name)")
             .setSpanKind(spanKind: .client).setActive(true)
         
@@ -48,6 +48,8 @@ class MyTraceLogger {
      
     static func stopTrace(associatedObject: AnyObject) {
         if let span = OpenTelemetrySDK.instance.contextProvider.activeSpan {
+            print("#### 2 stopping trace: \(span.name)")
+            
             span.status = .ok
             span.end()
         }

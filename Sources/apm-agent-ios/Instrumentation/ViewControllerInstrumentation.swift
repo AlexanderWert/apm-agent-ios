@@ -75,11 +75,11 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
                             let name = "\(type(of: viewController)).loadView()"
-                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
 
                             previousImplementation(viewController, self.selector)
 
-                            TraceLogger.stopTrace(associatedObject: viewController)
+                            MyTraceLogger.stopTrace(associatedObject: viewController)
                         }
                     }
                 }
@@ -98,10 +98,10 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
                             let name = "\(type(of: viewController)).viewDidLoad()"
-                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
                             previousImplementation(viewController, self.selector)
 
-                            TraceLogger.stopTrace(associatedObject: viewController)
+                            MyTraceLogger.stopTrace(associatedObject: viewController)
                         }
                     }
                 }
@@ -119,9 +119,9 @@
                 swap { previousImplementation -> BlockSignature in
                     { viewController, child -> Void in
                         let name = "\(type(of: child)) added to \(type(of: viewController))"
-                        _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                        _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
                         previousImplementation(viewController, self.selector, child)
-                        TraceLogger.stopTrace(associatedObject: viewController)
+                        MyTraceLogger.stopTrace(associatedObject: viewController)
                     }
                 }
             }
@@ -141,9 +141,9 @@
                     swap { previousImplementaion -> BlockSignature in
                         { viewController, from, to, duration, options, animations, completion -> Void in
                             let name = "\(type(of: viewController)) transitioning to \(type(of: to)) from \(type(of: from))"
-                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
                             previousImplementaion(viewController, self.selector, from, to, duration, options, animations, completion)
-                            TraceLogger.stopTrace(associatedObject: viewController)
+                            MyTraceLogger.stopTrace(associatedObject: viewController)
                         }
                     }
                 }
