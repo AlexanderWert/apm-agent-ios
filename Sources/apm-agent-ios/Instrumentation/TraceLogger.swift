@@ -44,6 +44,7 @@ class TraceLogger {
             
             let span = builder.startSpan()
             span.setAttribute(key: "session.id", value: SessionManager.instance.session())
+            OpenTelemetrySDK.instance.contextProvider.setActiveSpan(span)
             objc_setAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey), span, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
             return span
         }
