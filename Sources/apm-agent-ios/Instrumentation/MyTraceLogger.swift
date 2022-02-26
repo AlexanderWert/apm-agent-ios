@@ -38,6 +38,9 @@ class MyTraceLogger {
 
     static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String) -> Span {
         print("####### 4 Starting span ...")
+        if let activeSpan = OpenTelemetrySDK.instance.contextProvider.activeSpan {
+            print("####### ACTIVE SPAN: \(activeSpan.name)")
+        }
         guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span else {
             
             let builder = tracer.spanBuilder(spanName: "\(name)")
@@ -57,7 +60,14 @@ class MyTraceLogger {
             print("####### 4 Stopping span: \(span.context.spanId)")
             print("####### NAME: \(span.name)")
             span.status = .ok
+            
+            if let activeSpanBefore = OpenTelemetrySDK.instance.contextProvider.activeSpan {
+                print("####### ACTIVE SPAN BEFORE: \(activeSpanBefore.name)")
+            }
             span.end()
+            if let activeSpanAfter = OpenTelemetrySDK.instance.contextProvider.activeSpan {
+                print("####### ACTIVE SPAN AFTER: \(activeSpanAfter.name)")
+            }
             objc_setAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey), nil, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
         }
     }
