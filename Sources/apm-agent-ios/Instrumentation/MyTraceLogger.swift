@@ -38,13 +38,20 @@ class MyTraceLogger {
 
     static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String) -> Span {
         print("####### 4 Starting span ...")
+        var isRoot = true
         if let activeSpan = OpenTelemetrySDK.instance.contextProvider.activeSpan {
             print("####### ACTIVE SPAN: \(activeSpan.context.spanId)")
+            isRoot = false
         }
         guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span else {
             
             let builder = tracer.spanBuilder(spanName: "\(name)")
-                .setSpanKind(spanKind: .client).setActive(true)
+                .setSpanKind(spanKind: .client)
+            
+            if isRoot {
+                builder.setActive(true)
+            }
+                
             let span = builder.startSpan()
             print("####### 4 Starting span: \(span.context.spanId)")
             print("####### NAME: \(span.name)")
