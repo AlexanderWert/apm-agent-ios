@@ -75,7 +75,7 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
                             let name = "\(type(of: viewController)).loadView()"
-                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
 
                             previousImplementation(viewController, self.selector)
 
@@ -98,7 +98,7 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
                             let name = "\(type(of: viewController)).viewDidLoad()"
-                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
                             previousImplementation(viewController, self.selector)
 
                             MyTraceLogger.stopTrace(associatedObject: viewController)
@@ -119,7 +119,7 @@
                 swap { previousImplementation -> BlockSignature in
                     { viewController, child -> Void in
                         let name = "\(type(of: child)) added to \(type(of: viewController))"
-                        _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                        _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: false)
                         previousImplementation(viewController, self.selector, child)
                         MyTraceLogger.stopTrace(associatedObject: viewController)
                     }
@@ -141,7 +141,7 @@
                     swap { previousImplementaion -> BlockSignature in
                         { viewController, from, to, duration, options, animations, completion -> Void in
                             let name = "\(type(of: viewController)) transitioning to \(type(of: to)) from \(type(of: from))"
-                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
                             previousImplementaion(viewController, self.selector, from, to, duration, options, animations, completion)
                             MyTraceLogger.stopTrace(associatedObject: viewController)
                         }
@@ -163,7 +163,7 @@
                         { viewController, animated -> Void in
                             let name = "\(type(of: viewController)).viewAppear()"
                             
-                            MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
 
                             previousImplementation(viewController, self.selector, animated)
                         }
@@ -222,7 +222,7 @@
                 func swizzle() {
                     swap { previousImplementation -> BlockSignature in
                         { viewController, animated -> Void in
-                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: "\(type(of: viewController)).viewDisappear()")
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: "\(type(of: viewController)).viewDisappear()", isRoot: true)
                             previousImplementation(viewController, self.selector, animated)
                         }
                     }
@@ -241,7 +241,7 @@
                 func swizzle() {
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
-                           _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: "\(type(of: viewController)).viewLayoutSubviews()")
+                           _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: "\(type(of: viewController)).viewLayoutSubviews()", isRoot: false)
                             previousImplementation(viewController, self.selector)
                         }
                     }
