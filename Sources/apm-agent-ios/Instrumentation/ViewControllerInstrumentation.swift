@@ -21,6 +21,7 @@
 
     internal class ViewControllerInstrumentation {
         let loadView: LoadView
+        let loadViewIfNeeded: LoadViewIfNeeded
         let viewDidLoad: ViewDidLoad
         let viewWillAppear: ViewWillAppear
         let viewDidAppear: ViewDidAppear
@@ -31,6 +32,7 @@
         let transition: Transition
         init() throws {
             loadView = try LoadView.build()
+            loadViewIfNeeded = try LoadViewIfNeeded.build()
             viewDidLoad = try ViewDidLoad.build()
             viewWillAppear = try ViewWillAppear.build()
             viewDidAppear = try ViewDidAppear.build()
@@ -75,6 +77,29 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
                             let name = "\(type(of: viewController)).loadView()"
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
+
+                            previousImplementation(viewController, self.selector)
+
+                            MyTraceLogger.stopTrace(associatedObject: viewController)
+                        }
+                    }
+                }
+            }
+        
+        class LoadViewIfNeeded: MethodSwizzler<
+        @convention(c) (UIViewController, Selector) -> Void,
+            @convention(block) (UIViewController) -> Void
+            >
+            {
+                static func build() throws -> LoadViewIfNeeded {
+                    try LoadViewIfNeeded(selector: #selector(UIViewController.loadViewIfNeeded), klass: UIViewController.self)
+                }
+
+                func swizzle() {
+                    swap { previousImplementation -> BlockSignature in
+                        { viewController -> Void in
+                            let name = "\(type(of: viewController)).loadViewIfNeeded()"
                             _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
 
                             previousImplementation(viewController, self.selector)
