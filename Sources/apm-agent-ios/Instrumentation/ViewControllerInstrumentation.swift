@@ -161,9 +161,9 @@
                 func swizzle() {
                     swap { previousImplementation -> BlockSignature in
                         { viewController, animated -> Void in
-                            let name = "\(type(of: viewController)).viewAppear()"
-                            
-                            MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
+                            let name = "\(type(of: viewController)) - view appearing"
+
+                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
 
                             previousImplementation(viewController, self.selector, animated)
                         }
@@ -179,12 +179,14 @@
                 static func build() throws -> ViewDidAppear {
                     try ViewDidAppear(selector: #selector(UIViewController.viewDidAppear), klass: UIViewController.self)
                 }
-
                 func swizzle() {
                     swap { previousImplementation -> BlockSignature in
                         { viewController, animated -> Void in
+                            //let name = "\(type(of: viewController)).viewDidAppear()"
+                            //_ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            //TraceLogger.setDate(on: viewController)
                             previousImplementation(viewController, self.selector, animated)
-                            MyTraceLogger.stopTrace(associatedObject: viewController)
+                            TraceLogger.stopTrace(associatedObject: viewController)
                         }
                     }
                 }
