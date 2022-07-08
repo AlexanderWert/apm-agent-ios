@@ -21,25 +21,25 @@
 
     internal class ViewControllerInstrumentation {
         let loadView: LoadView
-        //let viewDidLoad: ViewDidLoad
+        let viewDidLoad: ViewDidLoad
         let viewWillAppear: ViewWillAppear
         let viewDidAppear: ViewDidAppear
-        //let viewDidDisappear: ViewDidDisappear
-        //let viewWillDisappear: ViewWillDisappear
-        //let viewWillLayoutSubviews: ViewWillLayoutSubviews
-        //let viewDidLayoutSubviews: ViewDidLayoutSubviews
-        //let transition: Transition
+        let viewDidDisappear: ViewDidDisappear
+        let viewWillDisappear: ViewWillDisappear
+        let viewWillLayoutSubviews: ViewWillLayoutSubviews
+        let viewDidLayoutSubviews: ViewDidLayoutSubviews
+        let transition: Transition
         init() throws {
             loadView = try LoadView.build()
-            //viewDidLoad = try ViewDidLoad.build()
+            viewDidLoad = try ViewDidLoad.build()
             viewWillAppear = try ViewWillAppear.build()
             viewDidAppear = try ViewDidAppear.build()
-            //viewDidDisappear = try ViewDidDisappear.build()
-            //viewWillDisappear = try ViewWillDisappear.build()
-            //viewWillLayoutSubviews = try ViewWillLayoutSubviews.build()
-            //viewDidLayoutSubviews = try ViewDidLayoutSubviews.build()
-            //transition = try Transition.build()
-            //NotificationCenter.default.addObserver(TraceLogger.self, selector: #selector(TraceLogger.didEnterBackground), name: UIApplication.willResignActiveNotification, object: nil)
+            viewDidDisappear = try ViewDidDisappear.build()
+            viewWillDisappear = try ViewWillDisappear.build()
+            viewWillLayoutSubviews = try ViewWillLayoutSubviews.build()
+            viewDidLayoutSubviews = try ViewDidLayoutSubviews.build()
+            transition = try Transition.build()
+            NotificationCenter.default.addObserver(TraceLogger.self, selector: #selector(TraceLogger.didEnterBackground), name: UIApplication.willResignActiveNotification, object: nil)
         }
 
         deinit {
@@ -48,14 +48,14 @@
 
         func swizzle() {
             loadView.swizzle()
-            //viewDidLoad.swizzle()
+            viewDidLoad.swizzle()
             viewWillAppear.swizzle()
             viewDidAppear.swizzle()
-            //viewDidDisappear.swizzle()
-            //viewWillDisappear.swizzle()
-            //transition.swizzle()
-            //viewWillLayoutSubviews.swizzle()
-            //viewDidLayoutSubviews.swizzle()
+            viewDidDisappear.swizzle()
+            viewWillDisappear.swizzle()
+            transition.swizzle()
+            viewWillLayoutSubviews.swizzle()
+            viewDidLayoutSubviews.swizzle()
         }
 
         static func getTracer() -> TracerSdk {
@@ -75,11 +75,11 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
                             let name = "\(type(of: viewController)).loadView()"
-                            //_ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
+                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
 
                             previousImplementation(viewController, self.selector)
 
-                            //MyTraceLogger.stopTrace(associatedObject: viewController)
+                            MyTraceLogger.stopTrace(associatedObject: viewController)
                         }
                     }
                 }
