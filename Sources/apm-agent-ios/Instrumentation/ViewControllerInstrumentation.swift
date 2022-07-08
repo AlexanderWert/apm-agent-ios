@@ -123,7 +123,7 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
                             let title = viewController.navigationItem.title
-                            let name = title != nil ? title! : "\(type(of: viewController)) - view appearing"
+                            let name = "\(type(of: viewController)) - view appearing"
                             
                             
                             _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, preferredName: title)
@@ -188,7 +188,7 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController, animated -> Void in
                             let title = viewController.navigationItem.title
-                            let name = title != nil ? title! : "\(type(of: viewController)) - view appearing"
+                            let name = "\(type(of: viewController)) - view appearing"
 
                             _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, preferredName: title)
 
