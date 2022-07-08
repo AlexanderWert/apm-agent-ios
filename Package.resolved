@@ -14,9 +14,9 @@
         "package": "opentelemetry-swift",
         "repositoryURL": "https://github.com/AlexanderWert/opentelemetry-swift",
         "state": {
-          "branch": null,
-          "revision": "0b391683832a172bcb92dda69718d8f44b1adaf9",
-          "version": "1.1.2"
+          "branch": "alex-test",
+          "revision": "3e4a0a1537af27a9c1112bedbf417c113b8a0b6b",
+          "version": null
         }
       },
       {
