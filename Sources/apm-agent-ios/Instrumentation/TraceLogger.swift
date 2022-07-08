@@ -36,7 +36,7 @@ class TraceLogger {
         return date
     }
   
-    static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String) -> Span {
+    static func startTrace(tracer: TracerSdk, associatedObject: AnyObject, name: String, preferredName: String?) -> Span {
         
         guard let previousSpan = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span else {
             
@@ -51,12 +51,16 @@ class TraceLogger {
             objc_setAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey), span, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
             return span
         }
+        if(preferredName != nil && name != preferredName){
+            print("#### renaming trace: \(name) -> \(preferredName!) - \(previousSpan.context.traceId) - \(previousSpan.context.spanId)")
+            previousSpan.name = preferredName!
+        }
         return previousSpan
     }
 
     static func stopTrace(associatedObject: AnyObject) {
         if let span = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? Span {
-            print("#### Starting trace: \(span.name) - \(span.context.traceId) - \(span.context.spanId)")
+            print("#### Stopping trace: \(span.name) - \(span.context.traceId) - \(span.context.spanId)")
             span.status = .ok
             span.end()
             objc_setAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey), nil, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)

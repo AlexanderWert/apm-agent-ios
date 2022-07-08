@@ -126,7 +126,7 @@
                             let name = title != nil ? title! : "\(type(of: viewController)) - view appearing"
                             
                             
-                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, preferredName: title)
                             previousImplementation(viewController, self.selector)
                         }
                     }
@@ -190,7 +190,7 @@
                             let title = viewController.navigationItem.title
                             let name = title != nil ? title! : "\(type(of: viewController)) - view appearing"
 
-                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name)
+                            _ = TraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, preferredName: title)
 
                             previousImplementation(viewController, self.selector, animated)
                         }
