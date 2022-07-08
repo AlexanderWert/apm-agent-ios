@@ -20,7 +20,7 @@
     import UIKit
 
     internal class ViewControllerInstrumentation {
-       // let loadView: LoadView
+        let loadView: LoadView
         //let viewDidLoad: ViewDidLoad
         let viewWillAppear: ViewWillAppear
         let viewDidAppear: ViewDidAppear
@@ -30,7 +30,7 @@
         //let viewDidLayoutSubviews: ViewDidLayoutSubviews
         //let transition: Transition
         init() throws {
-            //loadView = try LoadView.build()
+            loadView = try LoadView.build()
             //viewDidLoad = try ViewDidLoad.build()
             viewWillAppear = try ViewWillAppear.build()
             viewDidAppear = try ViewDidAppear.build()
@@ -47,7 +47,7 @@
         }
 
         func swizzle() {
-            //loadView.swizzle()
+            loadView.swizzle()
             //viewDidLoad.swizzle()
             viewWillAppear.swizzle()
             viewDidAppear.swizzle()
@@ -75,11 +75,11 @@
                     swap { previousImplementation -> BlockSignature in
                         { viewController -> Void in
                             let name = "\(type(of: viewController)).loadView()"
-                            _ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
+                            //_ = MyTraceLogger.startTrace(tracer: ViewControllerInstrumentation.getTracer(), associatedObject: viewController, name: name, isRoot: true)
 
                             previousImplementation(viewController, self.selector)
 
-                            MyTraceLogger.stopTrace(associatedObject: viewController)
+                            //MyTraceLogger.stopTrace(associatedObject: viewController)
                         }
                     }
                 }
