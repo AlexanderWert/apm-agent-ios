@@ -42,7 +42,7 @@ class TraceLogger {
         guard let previousSpan = getCurrentSpanForViewController(viewController: associatedObject as! UIViewController) else {
             let builder = tracer.spanBuilder(spanName: "\(name)")
                 .setSpanKind(spanKind: .client)
-
+            
             let span = builder.startSpan()
             print("#### Starting trace: \(name) - \(span.context.traceId) - \(span.context.spanId)")
             span.setAttribute(key: "session.id", value: SessionManager.instance.session())
@@ -69,14 +69,16 @@ class TraceLogger {
     }
     
     static func getCurrentSpanForViewController(viewController: UIViewController) -> Span? {
-        var span = objc_getAssociatedObject(viewController, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span
-        var currentController = viewController.parent
-        while span == nil  &&  currentController != nil {
-            span = objc_getAssociatedObject(currentController as Any, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span
-            currentController = currentController!.parent
-        }
+        return OpenTelemetry.instance.contextProvider.activeSpan
         
-        return span
+//        var span = objc_getAssociatedObject(viewController, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span
+//        var currentController = viewController.parent
+//        while span == nil  &&  currentController != nil {
+//            span = objc_getAssociatedObject(currentController as Any, UnsafeRawPointer(&Self.objectKey)) as? OpenTelemetryApi.Span
+//            currentController = currentController!.parent
+//        }
+//
+//        return span
     }
 }
 #endif // #if os(iOS)
