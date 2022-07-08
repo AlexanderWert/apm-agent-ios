@@ -59,7 +59,8 @@ class TraceLogger {
     }
 
     static func stopTrace(associatedObject: AnyObject) {
-        if let span = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? Span {
+        //if let span = objc_getAssociatedObject(associatedObject, UnsafeRawPointer(&Self.objectKey)) as? Span {
+        if let span = getCurrentSpanForViewController(viewController: associatedObject as! UIViewController) {
             print("#### Stopping trace: \(span.name) - \(span.context.traceId) - \(span.context.spanId)")
             span.status = .ok
             span.end()
